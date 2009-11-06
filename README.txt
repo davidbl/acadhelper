@@ -1,10 +1,10 @@
 = acadhelper
 
-* FIX (url)
-
+http://github.com/davidbl/IronRuby-Autocad-Helper
 == DESCRIPTION:
 
-FIX (describe your package)
+Wrappers and helpers to simplify the access to the AutoCAD Managed .Net API
+using IronRuby and Ruby code
 
 == FEATURES/PROBLEMS:
 
@@ -12,21 +12,38 @@ FIX (describe your package)
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+require 'acadhelper'
+require 'acad2009' # or your version of this file
+include AcadHelper
+
+ def circle_example
+   begin
+     my_circle = create_circle 5,5,1,6 #x,y,z,radius
+     my_circle.add_to_current_space
+   rescue Exception => e
+     puts_ex e
+   end  
+ end
+
+##see examples directory for more info and example
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
-
+AutoCAD, Version 2009 or greater
+IronRuby 0.9.0
+RubyAcad.dll compiled against your version of AutoCAD 
+   (a snapshot is included in acadhelper/lib/acadheler/rubyacad.cs
+    Download the current source from github http://github.com/davidbl/IronRuby-Autocad-Helper)
+   
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+igem install acadhelper
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 FIX
+Copyright (c) 2009 David K. Blackmon
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
