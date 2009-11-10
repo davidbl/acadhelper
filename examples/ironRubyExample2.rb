@@ -1,6 +1,6 @@
 #= Additional Examples
-
-require 'AcadHelper'
+require 'rubygems'
+require 'acadhelper'
 
 include AcadHelper
 

@@ -1,5 +1,7 @@
 # = AcadHelper examples
-require 'AcadHelper'
+
+require 'rubygems'
+require 'acadhelper'
 
 include AcadHelper
 

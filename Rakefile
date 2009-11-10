@@ -12,7 +12,7 @@ spec = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.description = "AcadHelper - easy access to AutoCAD Managed API via IronRuby"
   s.summary = "Wrappers and helpers for accessing the AutoCAD Managed .Net API with Ruby code using IronRuby"
-  s.files = FileList["{bin,lib}/**/*"].to_a
+  s.files = FileList["{bin,lib,examples}/**/*"].to_a
   s.requirements << 'none'
   s.require_path = "lib"
   s.has_rdoc = true

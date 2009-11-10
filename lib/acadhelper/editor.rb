@@ -1,5 +1,5 @@
 # Wrappers for some of the editor functions
-
+module AcadHelper
 #Wrapper for Editor.GetEntity function
 # :AddAllowedClass value can be single string, single element array or multi-element array
  def get_entity_id prompt=nil, options = {}
@@ -160,3 +160,4 @@
 		
 	end
 	
+end	

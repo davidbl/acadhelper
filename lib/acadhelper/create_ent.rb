@@ -1,8 +1,10 @@
-#Entity creation helpers. These methods simplify the default constructors
+#= Entity creation helpers. These methods simplify the default constructors
 
-#point3D creation helper.
-#if z is not provided, 0 will be used
-# returns an instance of Ag::Point3d
+module AcadHelper
+# point3D creation helper
+#
+# if z is not provided, 0 will be used
+#  returns an instance of Ag::Point3d
   def ac_pt3d(x,y,z=0)
   	begin
     	pt3d = Ag::Point3d.new(x, y, z)
@@ -12,8 +14,8 @@
     pt3d
   end
   
-#point2D creation helper.
-# returns an instance of Ag::Point2d
+# point2D creation helper.
+#  returns an instance of Ag::Point2d
   def ac_pt2d(x,y)
   	begin
     	pt2d = Ag::Point2d.new(x, y)
@@ -23,59 +25,60 @@
     pt2d
   end
   
-#text creation helper.
-#will take an argument hash in the form of {:Property1 => val, :Property2 => val.... :PropertyN => val }
-#where PropertyX is a member of Autodesk.AutoCAD.DatabaseServices.DBText
-def create_text(props = {})
-	begin
-		text = Ads::DBText.new
-		props.each do |key, value|
-			ptype = text.GetType
-			prop = ptype.GetProperty key.to_s
-			value = value.to_clr_string if key == :TextString
-			prop.SetValue text, value, nil
-		end
-	rescue Exception => e
-      puts_ex e 
-	end	
-	text
-end
+# text creation helper.
+#
+# will take an argument hash in the form of {:Property1 => val, :Property2 => val.... :PropertyN => val }
+#  where PropertyX is a member of Autodesk.AutoCAD.DatabaseServices.DBText
+	def create_text(props = {})
+		begin
+			text = Ads::DBText.new
+			props.each do |key, value|
+				ptype = text.GetType
+				prop = ptype.GetProperty key.to_s
+				value = value.to_clr_string if key == :TextString
+				prop.SetValue text, value, nil
+			end
+		rescue Exception => e
+	      puts_ex e 
+		end	
+		text
+	end
 
 #text chart creation helper
 #text_strings is a nested array of form [ [row1_col1, row1_col2...row1_colN],....[rowN_col1,rowN_col1...rowN_colN] ]
 #column_sep is distance between columns
 #row_sep is distance between rows
 #for column and row sep, positive value will go to right or down, negative values will go left or up
-def create_text_chart(text_strings, start_x, start_y, column_sep, row_sep, props = {})
-	begin
-		col_count, row_count = 0,0
-		text_strings.each do |row|
-			col_count = 0
-			row.each do |str|
-				text = Ads::DBText.new
-				#add the Position to the props
-				ins_pt = ac_pt3d(start_x+col_count*column_sep, start_y-row_sep*row_count)
-				props[:Position] = ins_pt
-				props[:AlignmentPoint] = ins_pt
-				props.each do |key, value|
-					ptype = text.GetType
-					prop = ptype.GetProperty key.to_s
-					value = value.to_clr_string if key == :TextString
-					prop.SetValue text, value, nil
-				end
-				text.TextString = str
-				text.add_to_current_space
-				col_count += 1
-			end #row_each
-			row_count += 1
-		end
-        
-	rescue Exception => e
-    	puts_ex e 
-	end	
-	
-	
-end
+	def create_text_chart(text_strings, start_x, start_y, column_sep, row_sep, props = {})
+		begin
+			col_count, row_count = 0,0
+			text_strings.each do |row|
+				col_count = 0
+				row.each do |str|
+					text = Ads::DBText.new
+					#add the Position to the props
+					ins_pt = ac_pt3d(start_x+col_count*column_sep, start_y-row_sep*row_count)
+					props[:Position] = ins_pt
+					props[:AlignmentPoint] = ins_pt
+					props.each do |key, value|
+						ptype = text.GetType
+						prop = ptype.GetProperty key.to_s
+						value = value.to_clr_string if key == :TextString
+						prop.SetValue text, value, nil
+					end
+					text.TextString = str
+					text.add_to_current_space
+					col_count += 1
+				end #row_each
+				row_count += 1
+			end
+	        
+		rescue Exception => e
+	    	puts_ex e 
+		end	
+		
+		
+	end
 
 #circle creation helper.
 #if normal is not provided ZAxis will be used (0,0,1)
@@ -167,3 +170,5 @@ end
     end	
     pline	
   end
+  
+end

@@ -1,4 +1,4 @@
-
+module AcadHelper
 require 'ostruct'
 # = Helper class for using managed transactions
 #
@@ -98,3 +98,5 @@ require 'ostruct'
 		end
 	
 	end
+end	
+	
