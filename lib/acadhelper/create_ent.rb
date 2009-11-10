@@ -2,7 +2,7 @@
 
 #point3D creation helper.
 #if z is not provided, 0 will be used
-#returns an instance of Ag::Point3d
+# returns an instance of Ag::Point3d
   def ac_pt3d(x,y,z=0)
   	begin
     	pt3d = Ag::Point3d.new(x, y, z)
@@ -13,7 +13,7 @@
   end
   
 #point2D creation helper.
-#returns an instance of Ag::Point2d
+# returns an instance of Ag::Point2d
   def ac_pt2d(x,y)
   	begin
     	pt2d = Ag::Point2d.new(x, y)
@@ -79,7 +79,7 @@ end
 
 #circle creation helper.
 #if normal is not provided ZAxis will be used (0,0,1)
-#returns an instance of Ads::Circle
+# returns an instance of Ads::Circle
   def create_circle(x,y,z,radius,normal=nil)
   	begin
   		normal ||= Ag::Vector3d.ZAxis
@@ -92,7 +92,7 @@ end
   
   
 #PointEntity creation helper.
-#returns an instance of Ads::DBPoint
+# returns an instance of Ads::DBPoint
   def create_point_ent(x,y,z=0)
   	begin
     	point = Ads::DBPoint.new(Ag::Point3d.new(x, y, z))
@@ -105,7 +105,7 @@ end
 #arc creation helper.  
 #if normal is not provided ZAxis will be used (0,0,1)
 #degrees_or_radians is passed as :D or :R to indicate units of the angle arguments
-#returns an instance of Ads::Arc
+# returns an instance of Ads::Arc
   def create_arc(x,y,z,radius,start_angle, end_angle, degrees_or_radians, normal=nil)
   	begin
   		normal ||= Ag::Vector3d.ZAxis
@@ -120,7 +120,7 @@ end
 #line creation helper
 #start_pt and end_pt are arrays of form [x,y,z=nil]
 #if z is not provided, 0 will be used
-##returns an instance of Ads::Line
+# returns an instance of Ads::Line
   def create_line(start_pt, end_pt)
   	begin
   	  start_pt[2] ||= 0

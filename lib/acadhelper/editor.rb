@@ -1,4 +1,4 @@
-#Wrappers for some of the editor functions
+# Wrappers for some of the editor functions
 
 #Wrapper for Editor.GetEntity function
 # :AddAllowedClass value can be single string, single element array or multi-element array
@@ -67,10 +67,11 @@
 
 
 	
-#Wrapper for user input functions such as 	GetDistance, GetDouble, GetInteger, GetString, etc
-#Also wraps the Prompt{TYPE}Options commands PromptDistanceOptions, PromptDoubleOptions, etc
-#example usage is --
-#distance = get_input :Double, "\nEnter a double", :AllowNegative => true, :AllowZero => true
+# Wrapper for user input functions such as 	GetDistance, GetDouble, GetInteger, GetString, etc
+# Also wraps the Prompt{TYPE}Options commands PromptDistanceOptions, PromptDoubleOptions, etc
+#
+# example usage is --
+#  my_double = get_input :Double, "\nEnter a double", :AllowNegative => true, :AllowZero => true
 	def get_input type, prompt=nil, options = {}
 		begin
 			prompt ||= "\nPlease enter a #{type}"
@@ -109,14 +110,16 @@
 		end
 	end	
 	
-#Selection set creation helpers
-#filter is array of arrays of form [ [dxfCode, Value], [dxfCode, Value] ]
-#example usage [ [0,"Circle"], [8, "Layer1"], [62, 5] ] would select only circles of color 5 on Layer1
-#Dxfcodes can be found in the AutoCAD Developer Help. 
-#Common ones are 0-Entity Type(as string), 2-Block Name(as string), 8-LayerName(as String)
-#62-Color(0-256 as integer), 67-SpaceIndicator(0 or omitted=Modelspace, 1=Paperspace).
-#Also support -4 codes and associated operators.
-#Returns an object of type <em>Autodesk.AutoCAD.EditorInput.SelectionSet</em>
+# Selection set creation helpers
+#
+# filter is array of arrays of form [ [dxfCode, Value], [dxfCode, Value] ]
+#  example usage [ [0,"Circle"], [8, "Layer1"], [62, 5] ] would select only circles of color 5 on Layer1
+# Dxfcodes can be found in the AutoCAD Developer Help. 
+#  Common ones are 0-Entity Type(as string), 2-Block Name(as string), 8-LayerName(as String)
+#  62-Color(0-256 as integer), 67-SpaceIndicator(0 or omitted=Modelspace, 1=Paperspace).
+# Also supports -4 codes and associated operators.
+#
+# Returns an object of type <em>Autodesk.AutoCAD.EditorInput.SelectionSet</em>
 	def select_on_screen( filter_data=[])
 		begin
 	    filter = build_selection_filter filter_data
@@ -134,8 +137,9 @@
 		
 	end
 
-#helper method used by select* methods
-#see entry for select_on_screen for more information
+# helper method used by select* methods
+#
+# see entry for select_on_screen for more information
 	def build_selection_filter( filter_data = [])
 		begin
 		  #build the appropriate filter array

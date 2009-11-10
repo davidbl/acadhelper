@@ -1,8 +1,4 @@
-#wrappers for interfacing with the AutoLISP memory space and AutoLISP Functions
-
-
-require 'C:/LISP/RubyTest/RubyTest/bin/Release/RubyLisp.dll'
-
+#=wrappers for interfacing with the AutoLISP memory space and AutoLISP Functions
 
 # extensions to the ResultBuffer class for easier access	
 class Autodesk::AutoCAD::DatabaseServices::ResultBuffer
@@ -58,7 +54,7 @@ end
 #but, because the argument must be passed as a string,  we have to escape the quotes when the need them
 #actual argument strings would be "(setq x 55.5)", "(setq my_name \"David Blackmon\")"
 	def lisp_eval(lisp_string)
-		ret_val = RubyLisp::RubyLisp.evalLisp(lisp_string)		
+		ret_val = RubyAcad::Lisp.evalLisp(lisp_string)		
 		return nil if ret_val.code == 5019
 		ret_val
 	end

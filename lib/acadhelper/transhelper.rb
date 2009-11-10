@@ -1,7 +1,9 @@
-#helper class for using managed transactions
-#it won't handle every need every time,  but does handle
-#common usages quite well.
+
 require 'ostruct'
+# = Helper class for using managed transactions
+#
+# it won't handle every need every time,  but does handle
+# common usages quite well.
 	 class TransHelper
 		def initialize(use_this_db=nil)
 			@open_modes = {:Read => Ads::OpenMode.ForRead, :Write => Ads::OpenMode.ForWrite, }
@@ -15,14 +17,16 @@ require 'ostruct'
 		    @tr = @db.TransactionManager.StartTransaction
 		end
 		
-#transaction helper that executes a code block within the context of a managed transaction
-#arguements to yield  provide access to the the current Transaction and the current database
-#along with any requested tables (see below).  To access these objects in the block, corresponding arguments
-#must be passed with the block.  See Example below
-#trans takes an array argument of table names, eg [:Block, :Layer, :Linetype].  trans will
-#create an OpenStruct call @tables that will contain a reference to the #{table}Table so 
-#that, for example, the LayerTable can be accessed via tables.Layer[layer_name] 
-
+# transaction helper that executes a code block within the context of a managed transaction
+#
+# Arguments that are passed to yield  provide access to the the current Transaction and the current database
+# along with any requested tables (see below).  To access these objects in the block, corresponding arguments
+# must be passed with the block. 
+#
+# trans takes an array argument of table names, eg [:Block, :Layer, :Linetype]. 
+#
+# trans will create an OpenStruct called @tables that will contain a reference to the #{table}Table so 
+# that, for example, the LayerTable can be accessed via tables.Layer[layer_name] 
 		def trans(table_names=[], commit_after_block=true)
 			begin
 				tables_hash = {}
@@ -50,7 +54,21 @@ require 'ostruct'
 		        raise e  # pass it up the line
 		    end	
 		end	
+
+# Dipose of the transaction		
+		def dispose
+			@tr.Dispose
+		end
 		
+# Commit the transaction
+        def commit
+        	@tr.Commit
+    	end
+        			
+# Get the object from the object_id
+#
+# for use within the trans block (see the examples for usage)	
+#  valid values for mode are :Read and :Write
 		def get_obj(object_id, mode=:Read)
 			begin
 				ent = @tr.get_object(object_id, @open_modes[:Read])
@@ -64,10 +82,6 @@ require 'ostruct'
 	   	     rescue Exception => e
 			    puts_ex e
 	   		 end	
-		end
-		
-		def dispose
-			@tr.Dispose
 		end
 		
 		private

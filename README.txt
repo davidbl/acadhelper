@@ -12,8 +12,10 @@ using IronRuby and Ruby code
 
 == SYNOPSIS:
 
+#users will need to alter the acad_home to match their setup
+require 'rubygems'
 require 'acadhelper'
-require 'acad2009' # or your version of this file
+
 include AcadHelper
 
  def circle_example
@@ -32,11 +34,12 @@ include AcadHelper
 AutoCAD, Version 2009 or greater
 IronRuby 0.9.0
 RubyAcad.dll compiled against your version of AutoCAD 
-   (a snapshot is included in acadhelper/lib/acadheler/rubyacad.cs
     Download the current source from github http://github.com/davidbl/IronRuby-Autocad-Helper)
+(see the README there for information about loading Ruby files into AutoCAD  
    
 == INSTALL:
 
+irake gem
 igem install acadhelper
 
 == LICENSE:
