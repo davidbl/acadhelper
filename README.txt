@@ -34,7 +34,7 @@ include AcadHelper
 AutoCAD, Version 2009 or greater
 IronRuby 0.9.0  (hasn't been fully tested with 0.9.2 yet)
 RubyAcad.dll compiled against your version of AutoCAD 
-    Download the current source from github http://github.com/davidbl/IronRuby-Autocad-Helper)
+    Download the current source from github http://github.com/davidbl/acadhelper_loader)
 (see the README there for information about loading Ruby files into AutoCAD  
    
 == INSTALL:
