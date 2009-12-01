@@ -1,4 +1,6 @@
 # Wrappers for some of the editor functions
+require 'ostruct'
+
 module AcadHelper
 #Wrapper for Editor.GetEntity function
 # :AddAllowedClass value can be single string, single element array or multi-element array
@@ -74,23 +76,8 @@ module AcadHelper
 #  my_double = get_input :Double, "\nEnter a double", :AllowNegative => true, :AllowZero => true
 	def get_input type, prompt=nil, options = {}
 		begin
-			prompt ||= "\nPlease enter a #{type}"
-			opts = Autodesk::AutoCAD::EditorInput.const_get("Prompt#{type}Options").new prompt
-			
-			options.each do |key, value|
-				ptype = opts.GetType
-				prop_name = nil
-			    method_name = nil 
-			    prop_name ||= ptype.GetProperty(key.to_s)
-				if prop_name
-	    		   prop = ptype.GetProperty key.to_s
-				   prop.SetValue opts, value, nil
-				else
-					puts "\nUnable to set option #{key} for Get#{type} "   
-				end
-				
-			end
-	
+			opts = build_option(type, prompt, options)
+
 			result = ed.send("Get#{type}", opts)
 	
 			if result.Status == Aei::PromptStatus.OK
@@ -122,15 +109,18 @@ module AcadHelper
 # Returns an object of type <em>Autodesk.AutoCAD.EditorInput.SelectionSet</em>
 	def select_on_screen( filter_data=[])
 		begin
-	    filter = build_selection_filter filter_data
-		#ssPrompt = ed.GetSelection( Aei::SelectionFilter.new(filter))
-		ssPrompt = ed.GetSelection( filter)
-		if ssPrompt.Status == Aei::PromptStatus.OK
-		   return ssPrompt.Value 
-		else   
-		 	 #should we return nil or raise an exception here?
-	  	 	nil
-	  	end 	
+			if filter_data.is_a?(SsFilter)
+				filter = filter_data.filter
+			else		
+		    	filter = build_selection_filter filter_data
+		    end	
+			ssPrompt = ed.GetSelection( filter)
+			if ssPrompt.Status == Aei::PromptStatus.OK
+			   return ssPrompt.Value 
+			else   
+			 	 #should we return nil or raise an exception here?
+		  	 	nil
+		  	end 	
 		rescue Exception => e
 	      puts_ex e
 		end
@@ -158,6 +148,71 @@ module AcadHelper
 	
 	def select type, prompt=nil, options = {}
 		
+	end
+
+# SsFilter class allows for simple creation of selection set filters
+#
+# example usage
+#
+# filter = SsFilter.new
+# filter.Layer = "0,Layer1,Layer2"
+# filter.Type = "Circle,Line"
+# ss = select_on_screen filter	
+	class SsFilter
+		attr_accessor :data
+		def initialize
+			@data = {}
+			@elements = {:Type => 0, :Text => 1, :BlockName => 2, :LineType => 6, :TextStyle => 7, :Layer => 8,
+		             :StartPoint => 10, :CenterPoint => 10, :EndPoint => 11, :Elevation => 38, :Thickness => 39,
+		             :TextHeight => 40, :TextWidth => 41, :Rotation => 50, :Oblique => 51, :Color => 62}
+		    @keys = @elements.keys     
+  
+		end
+		
+		def filter
+			typed_value = Ads::TypedValue[]
+			new_filter = System::Array.of( typed_value).new(@data.size)
+			
+			i = 0
+		  	if @data.size > 0
+	        	@data.each_pair do  |key,value| 
+	        		new_filter.set_value(Ads::TypedValue.new( @elements[key], value), i)
+	        		i+=1
+	        	end	
+		  	end	
+	     	Aei::SelectionFilter.new(new_filter)
+		end
+		
+		def method_missing(method_name, *args)
+			if method_name.to_s.match(/(\w+)=/) && @keys.include?($1.to_sym)
+				@data[$1.to_sym] = args[0]
+			elsif @keys.include?(method_name)
+				return @data[method_name]
+			else
+				super(method_name, *args)
+			end
+		end
+	end
+	
+	private 
+	
+	def build_option(type, prompt=nil, options={})
+		    prompt ||= "\nPlease enter a #{type}"
+			opts = Autodesk::AutoCAD::EditorInput.const_get("Prompt#{type}Options").new prompt
+			options.each do |key, value|
+				ptype = opts.GetType
+				prop_name = nil
+			    method_name = nil 
+			    prop_name ||= ptype.GetProperty(key.to_s)
+				if prop_name
+	    		   prop = ptype.GetProperty key.to_s
+				   prop.SetValue opts, value, nil
+				else
+					Kernel.warn "\nUnable to set option #{key} for Get#{type} "   
+				end
+				
+			end
+			opts
 	end
 	
 end	

@@ -1,8 +1,6 @@
-.autotest
 History.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/acadhelper
 lib/acadhelper.rb
-test/test_acadhelper.rb
+

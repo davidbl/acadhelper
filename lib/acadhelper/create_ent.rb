@@ -44,11 +44,11 @@ module AcadHelper
 		text
 	end
 
-#text chart creation helper
-#text_strings is a nested array of form [ [row1_col1, row1_col2...row1_colN],....[rowN_col1,rowN_col1...rowN_colN] ]
-#column_sep is distance between columns
-#row_sep is distance between rows
-#for column and row sep, positive value will go to right or down, negative values will go left or up
+# text chart creation helper
+# text_strings is a nested array of form [ [row1_col1, row1_col2...row1_colN],....[rowN_col1,rowN_col1...rowN_colN] ]
+# column_sep is distance between columns
+# row_sep is distance between rows
+# for column and row sep, positive value will go to right or down, negative values will go left or up
 	def create_text_chart(text_strings, start_x, start_y, column_sep, row_sep, props = {})
 		begin
 			col_count, row_count = 0,0

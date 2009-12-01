@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'acadhelper'
 
+
 include AcadHelper
 
 #write text to the autocad command line
@@ -22,12 +23,21 @@ def circle_example
   end  
 end
 
+# Adds a circle to the current space more succinctly
+def circle_example_2
+	begin
+		create_circle(10,10,0,5).add_to_current_space 
+	rescue Exception => e
+    	puts_ex e
+  end	
+end
+
 # One doesn't have to use the helpers
 # The full managed API is available
 def circle_example_pure_api
 	begin
 	  #uses fully-qualifed identifiers
-	  #could us Aas::Application instead	
+	  #could use Aas::Application instead	
 	  app = Autodesk::AutoCAD::ApplicationServices::Application
 	  doc = app.DocumentManager.MdiActiveDocument
 	  db = doc.Database
@@ -118,8 +128,25 @@ end
 def select_on_screen_example
 	begin
 	   #with filter
-	   puts "\nSelect a circle that is color green and has radius > 2"
+	   puts "\nSelection will be limited to  circles that are color green and have radius > 2"
 	   ss = select_on_screen [[0,"Circle"],[62, 3],[-4,">="],[40, 2]]
+	   puts ss.inspect
+	   #see transaction_example for ways to 'do stuff' with the selection set
+	rescue Exception => e
+		puts_ex e
+	end
+	
+end
+
+# Selection Set example using selection set filter helper
+def select_filter_example
+	begin
+	   #with new filter class
+	   filter = SsFilter.new
+	   filter.Type = "Circle,Line"
+	   filter.Layer = "0,layer2"
+	   puts "\nSelection will be limited to circles and lines that are on layers 0 or 'layer2'"
+	   ss = select_on_screen filter
 	   puts ss.inspect
 	   #see transaction_example for ways to 'do stuff' with the selection set
 	rescue Exception => e

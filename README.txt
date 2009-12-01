@@ -1,6 +1,6 @@
 = acadhelper
 
-http://github.com/davidbl/IronRuby-Autocad-Helper
+http://github.com/davidbl/acadhelper
 == DESCRIPTION:
 
 Wrappers and helpers to simplify the access to the AutoCAD Managed .Net API
@@ -12,7 +12,7 @@ using IronRuby and Ruby code
 
 == SYNOPSIS:
 
-#users will need to alter the acad_home to match their setup
+
 require 'rubygems'
 require 'acadhelper'
 
@@ -27,7 +27,8 @@ include AcadHelper
    end  
  end
 
-##see examples directory for more info and example
+## see examples directory for more info and example
+## also the rdoc's are a good source of information
 
 == REQUIREMENTS:
 

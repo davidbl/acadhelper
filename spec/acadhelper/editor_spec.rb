@@ -59,4 +59,29 @@ module AcadHelper
 				
 	end
 	
+	describe "selection set filter builder" do
+		it "should be a class " do
+			ss_filter = SsFilter.new
+		end
+		
+		it "should allow the user to add elements one at a time" do
+			ss_filter = SsFilter.new
+			ss_filter.Layer = "test_layer"
+			ss_filter.Type = "line"
+			ss_filter.Layer.should == "test_layer"
+			ss_filter.Type.should == "line"
+		end
+		
+		it "should raise if element is invalid" do
+			ss_filter = SsFilter.new
+			lambda {ss_filter.Foo = "bar"}.should raise_error
+		end
+		
+		it "should have a filter method" do
+			ss_filter = SsFilter.new
+			ss_filter.filter.class.should == Aei::SelectionFilter
+		end
+		
+	end
+	
 end
